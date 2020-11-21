@@ -1,24 +1,27 @@
-<page>
-    <actionBar title="Svelte Native App" />
-    <gridLayout>
-        <label class="info" horizontalAlignment="center" verticalAlignment="middle" textWrap="true">
-            <formattedString>
-                <span class="fas" text="&#xf135;" />
-                <span text=" {message}" />
-            </formattedString>
-        </label>
-    </gridLayout>
-</page>
-
-<script lang="typescript">
-    let message: string = "Blank Svelte Native App"
+<script lang="ts">
+  import TabStrip from "./components/TabStrip.svelte";
+  import MyTasks from "./components/MyTasks.svelte";
 </script>
 
-<style>
-    .info .fas {
-        color: #3A53FF;
-    }
-    .info {
-        font-size: 20;
-    }
-</style>
+<page>
+  <actionBar title="Queara Tasks" />
+
+  <bottomNavigation>
+    <TabStrip />
+
+    <!-- The number of TabContentItem components should corespond to the number of TabStripItem components -->
+    <tabContentItem>
+      <MyTasks />
+    </tabContentItem>
+    <tabContentItem>
+      <gridLayout>
+        <label text="Account Page" class="h2 text-center" />
+      </gridLayout>
+    </tabContentItem>
+    <tabContentItem>
+      <gridLayout>
+        <label text="Search Page" class="h2 text-center" />
+      </gridLayout>
+    </tabContentItem>
+  </bottomNavigation>
+</page>
