@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Template } from "svelte-native/components";
   import { showModal } from "svelte-native";
-  import FAB from "./FAB.svelte";
+  import FAB from "../../components/FAB.svelte";
   import AddTask from "./AddTask.svelte";
   import { onMount, onDestroy } from "svelte";
-  import { task } from "../types";
+  import { task } from "../../types";
 
   let items: task[] = [];
 

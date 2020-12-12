@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { getString } from "@nativescript/core/application-settings";
-  import { loginStore } from "../stores";
   import { tnsOauthLogin } from "../auth-service";
 
-  async function loginGoogle() {
+  function loginGoogle() {
     tnsOauthLogin("google");
   }
 </script>

@@ -53,7 +53,7 @@ export function tnsOauthLogin(providerType) {
             // Save id token to application settings
             setString("idToken", tokenResult.idToken);
 
-            // const url = "https://oauth2.googleapis.com/tokeninfo";
+            // Set the store to update the UI know we have a idToken
             loginStore.set({ idToken: tokenResult.idToken });
         }
     });
