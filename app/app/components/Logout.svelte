@@ -17,5 +17,5 @@
 
 <gridLayout>
   <label text="Profile" class="h2 text-center" />
-  <button on:tap={logout}>Logout</button>
+  <button on:tap={logout} class="bg-danger">Logout</button>
 </gridLayout>

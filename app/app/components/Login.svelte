@@ -9,5 +9,5 @@
 <button
   on:tap={loginGoogle}
   backgroundColor="#999"
-  class="h4"
+  class="-primary -rounded-lg"
   wrapText="none">Login with Google</button>
