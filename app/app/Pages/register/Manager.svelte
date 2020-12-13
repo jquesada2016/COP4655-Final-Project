@@ -2,9 +2,11 @@
   import ActionBar from "../../components/ActionBar.svelte";
   import {
     getString,
+    setBoolean,
     setString,
   } from "@nativescript/core/application-settings";
   import { mutation } from "gql-query-builder";
+  import { registeredStore } from "../../stores";
 
   let company = "";
 
@@ -20,6 +22,11 @@
       id
       email
     }
+    errors {
+      field
+      message
+      errorCode
+    }
   }
 }
 
@@ -34,14 +41,26 @@
         const data = await res.json();
         console.log(data);
 
+        if (data.data.addNewUser.errors) {
+          alert(
+            "This user is already registered. Please use a didfferent account"
+          );
+          return;
+        }
+
         const id = data.data.addNewUser.user.id;
         const email = data.data.addNewUser.user.email;
 
+        console.log("id: " + id);
+        console.log("email: " + email);
+
         setString("id", id);
         setString("email", email);
+        setString("company", company);
+        setBoolean("registered", true);
 
-        console.log("storage id: " + getString("id"));
-        console.log("storage email: " + getString("email"));
+        console.log("registeredStore: " + JSON.stringify(registeredStore));
+        registeredStore.set(true);
       } catch (e: Error) {
         console.log(e);
       }

@@ -15,7 +15,4 @@
   }
 </script>
 
-<gridLayout>
-  <label text="Profile" class="h2 text-center" />
-  <button on:tap={logout} class="bg-danger">Logout</button>
-</gridLayout>
+<button on:tap={logout} class="-rounded-lg -outline">Logout</button>

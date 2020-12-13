@@ -5,11 +5,12 @@
   import Register from "./Pages/register/Register.svelte";
 
   import { navigate } from "svelte-native";
-  import { loginStore } from "./stores";
+  import { loginStore, registeredStore } from "./stores";
   import { onMount } from "svelte";
   import ActionBar from "./components/ActionBar.svelte";
 
-  let registered = false;
+  $: registered = $registeredStore;
+
   $: loggedIn = $loginStore.idToken ? true : false;
 
   $: {
@@ -23,7 +24,7 @@
 <page>
   <ActionBar />
 
-  {#if registered}
+  {#if registered || !loggedIn}
     <Login />
   {:else}
     <Register />
