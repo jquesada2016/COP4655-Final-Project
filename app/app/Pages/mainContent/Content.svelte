@@ -1,6 +1,8 @@
 <script lang="ts">
   import TabStrip from "./TabStrip.svelte";
   import MyTasks from "./MyTasks.svelte";
+  import QRCode from "../../components/QRCode.svelte";
+  import ScanQRCode from "../../components/ScanQRCode.svelte";
   import Logout from "../../components/Logout.svelte";
   import Unregister from "../../components/Unregister.svelte";
 </script>
@@ -19,13 +21,17 @@
       </gridLayout>
     </tabContentItem>
     <tabContentItem>
-      <flexboxLayout flexDirection="column">
-        <label text="Profile" class="h2 text-center m-b-20" flexGrow="1" />
-        <stackLayout verticalAlignment="center" class="m-b-20">
+      <scrollView>
+        <stackLayout>
+          <label text="Profile" class="h2 text-center" />
+          <QRCode />
+          <ScanQRCode manager>Scan Manager QR Code</ScanQRCode>
+          <ScanQRCode>Scan Employee QR Code</ScanQRCode>
+
           <Logout />
           <Unregister />
         </stackLayout>
-      </flexboxLayout>
+      </scrollView>
     </tabContentItem>
   </bottomNavigation>
 </page>

@@ -1,6 +1,6 @@
 <script>
   import { loginStore } from "../stores";
-  import { setString } from "tns-core-modules/application-settings";
+  import { setString } from "@nativescript/core/application-settings";
   import { navigate } from "svelte-native";
   import Login from "../App.svelte";
 
