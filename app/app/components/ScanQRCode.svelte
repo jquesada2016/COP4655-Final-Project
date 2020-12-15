@@ -44,4 +44,6 @@
   }
 </script>
 
-<button class="-outline -rounded-lg" on:tap={scan}><slot /></button>
+<button
+  class="-outline -rounded-lg p-x-10 p-y-10"
+  on:tap={scan}><slot /></button>

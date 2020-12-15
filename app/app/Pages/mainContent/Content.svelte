@@ -5,15 +5,20 @@
   import ScanQRCode from "../../components/ScanQRCode.svelte";
   import Logout from "../../components/Logout.svelte";
   import Unregister from "../../components/Unregister.svelte";
+  import FAB from "../../components/FAB.svelte";
+  import AddTask from "./AddTask.svelte";
+  import { navigate } from "svelte-native";
+
+  let tabs = true;
 </script>
 
-<page>
+<page on:navigatingTo={() => (tabs = true)}>
   <actionBar title="Queara Tasks" />
 
   <bottomNavigation>
     <TabStrip />
     <tabContentItem>
-      <MyTasks />
+      <MyTasks bind:tabs />
     </tabContentItem>
     <tabContentItem>
       <gridLayout>

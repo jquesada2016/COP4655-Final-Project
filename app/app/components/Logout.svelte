@@ -15,4 +15,7 @@
   }
 </script>
 
-<button on:tap={logout} class="-rounded-lg -outline">Logout</button>
+<button
+  on:tap={logout}
+  class="-rounded-lg -outline p-x-10 p-y-10"
+  borderColor="#e57373">Logout</button>

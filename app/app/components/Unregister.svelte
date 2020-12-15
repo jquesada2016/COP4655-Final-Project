@@ -16,7 +16,7 @@
         const url = "http://192.168.0.10:8000/graphql";
         const query = `
 mutation {
-  removeUser(id: "${getString("id")}") {
+  deleteUser(id: "${getString("id")}") {
     user {
       idToken
     }
@@ -55,4 +55,8 @@ mutation {
   }
 </script>
 
-<button class="bg-danger -rounded-lg" on:tap={unregister}>Delete Account</button>
+<button
+  class="-rounded-lg p-x-10 p-y-10"
+  borderColor="#e57373"
+  backgroundColor="#e57373"
+  on:tap={unregister}>Delete Account</button>

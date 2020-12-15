@@ -1,11 +1,14 @@
 <script lang="ts">
   import { Screen } from "@nativescript/core";
 
-  const top = Screen.mainScreen.heightDIPs - 275;
+  const top = Screen.mainScreen.heightDIPs - 250;
   const left = Screen.mainScreen.widthDIPs - 80;
 </script>
 
 <style>
+  flexboxLayout {
+    z-index: 100;
+  }
 </style>
 
 <flexBoxLayout

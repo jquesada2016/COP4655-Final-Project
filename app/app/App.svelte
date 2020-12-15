@@ -6,7 +6,7 @@
 
   import { navigate } from "svelte-native";
   import { loginStore, registeredStore } from "./stores";
-  import { onMount } from "svelte";
+  import { onMount, tick } from "svelte";
   import ActionBar from "./components/ActionBar.svelte";
 
   $: registered = $registeredStore;
@@ -14,10 +14,12 @@
   $: loggedIn = $loginStore.idToken ? true : false;
 
   $: {
-    // This is to avoid a bug where navigating too quickly fails
-    setTimeout(() => {
+    // This is to avoid a bug where navigating before components can mount fails
+    const delayNavigation = async () => {
+      await tick();
       if (loggedIn && registered) navigate({ page: Content });
-    }, 0);
+    };
+    delayNavigation();
   }
 </script>
 

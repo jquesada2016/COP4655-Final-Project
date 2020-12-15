@@ -1,28 +1,50 @@
 <script lang="ts">
   import { Template } from "svelte-native/components";
-  import { showModal } from "svelte-native";
-  import FAB from "../../components/FAB.svelte";
-  import AddTask from "./AddTask.svelte";
-  import { onMount, onDestroy } from "svelte";
+  import { navigate } from "svelte-native";
   import { task } from "../../types";
+  import AddTask from "./AddTask.svelte";
+  import FAB from "../../components/FAB.svelte";
+  import { onDestroy, onMount } from "svelte";
+  import { myTasksStore } from "../../stores/myTasksStore";
+  import Task from "./Task.svelte";
 
-  let items: task[] = [];
+  let tasks: task[];
 
-  onMount(async () => {
-    const res = await fetch("http://10.0.2.2:7000/tasks").catch((err) =>
-      console.log(err)
-    );
-    const data = await res.json();
-    items = [...items, ...(data.tasks as task[])];
-  });
+  $: tasks = $myTasksStore ? $myTasksStore : [];
+
+  export let tabs = false;
 </script>
 
-<absoluteLayout>
-  <stackLayout height="100%" width="100%">
-    <!-- <button on:tap={fetchData}>fetch data...</button> -->
-    <listView {items}>
-      <Template let:item><label class="h2">{item.title}</label></Template>
-    </listView>
-  </stackLayout>
-  <FAB on:tap={() => showModal({ page: AddTask })} />
-</absoluteLayout>
+{#if tabs}
+  <tabs position="top">
+    <tabStrip>
+      <tabStripItem><label>Active Tasks</label></tabStripItem>
+      <tabStripItem><label>Completed Tasks</label></tabStripItem>
+    </tabStrip>
+
+    <tabContentItem>
+      <scrollView>
+        <stackLayout>
+          <button
+            class="-rounded-lg -outline m-t-20 m-b-20"
+            on:tap={() => {
+              tabs = false;
+              navigate({ page: AddTask });
+            }}>+</button>
+
+          {#each tasks as task}
+            <label
+              on:tap={() => {
+                tabs = false;
+                navigate({ page: Task, props: { task } });
+              }}
+              class="-outline -rounded-lg m-l-15 m-r-15 m-b-20 p-x-15 p-y-10"
+              borderColor={task.taskColor ? task.taskColor : '#00e5ff'}
+              textWrap={true}>{task.title}</label>
+          {/each}
+        </stackLayout>
+      </scrollView>
+    </tabContentItem>
+    <tabContentItem><button>hello</button></tabContentItem>
+  </tabs>
+{/if}
