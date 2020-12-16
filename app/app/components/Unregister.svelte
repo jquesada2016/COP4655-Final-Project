@@ -1,7 +1,12 @@
 <script lang="ts">
   import { confirm } from "@nativescript/core/ui/dialogs";
   import { getString, clear } from "@nativescript/core/application-settings";
-  import { registeredStore, loginStore } from "../stores";
+  import {
+    registeredStore,
+    loginStore,
+    myTasksStore,
+    completedMyTasksStore,
+  } from "../stores";
   import { mutation } from "gql-query-builder";
   import { navigate } from "svelte-native";
 
@@ -45,8 +50,11 @@ mutation {
           // Clear application settings data and go to login screen.
           registeredStore.set(false);
           loginStore.set({ idToken: "" });
-          navigate({ page: Login });
           loginStore.set({ idToken: "" });
+          myTasksStore.set([]);
+          completedMyTasksStore.set([]);
+          clear();
+          navigate({ page: Login });
         } catch (e) {
           console.log(e);
         }
