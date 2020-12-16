@@ -60,6 +60,7 @@
         setBoolean("registered", true);
 
         console.log("registeredStore: " + JSON.stringify(registeredStore));
+
         registeredStore.set(true);
       } catch (e: Error) {
         console.log(e);

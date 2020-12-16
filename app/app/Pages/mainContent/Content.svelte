@@ -8,12 +8,13 @@
   import FAB from "../../components/FAB.svelte";
   import AddTask from "./AddTask.svelte";
   import { navigate } from "svelte-native";
+  import ActionBar from "../../components/ActionBar.svelte";
 
   let tabs = true;
 </script>
 
 <page on:navigatingTo={() => (tabs = true)}>
-  <actionBar title="Queara Tasks" />
+  <ActionBar />
 
   <bottomNavigation>
     <TabStrip />

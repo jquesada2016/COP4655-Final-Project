@@ -7,72 +7,60 @@
     getString,
     setString,
   } from "@nativescript/core/application-settings";
-  import { completedMyTasksStore, myTasksStore } from "../../stores";
+  import { myTasksStore } from "../../stores";
+
   import { goBack } from "svelte-native";
 
   export let task: taskType;
 
-  console.log(task);
-
   const deleteQuery = `
-  mutation{
+mutation{
   deleteTask(id:"${task.id}")
 }
   `;
 
-  async function deleteOrCompleteTask(deleteTask: boolean) {
+  async function deleteTask() {
     const ok = await confirm(
       "Are you sure you want to permanently delete this task?"
     );
 
     if (!ok) return;
 
-    let res: any;
+    // Delete on DB
+    const res = fetch(URL, {
+      ...FETCH_OPTIONS,
+      body: JSON.stringify({ query: deleteQuery }),
+    });
 
-    try {
-      res = await fetch(URL, {
-        ...FETCH_OPTIONS,
-        body: JSON.stringify({ query: deleteQuery }),
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    // Get the list of tasks
+    const myTasksString = getString("myTasks");
+    const myTasks: taskType[] = JSON.parse(myTasksString);
 
-    const data = await res.json();
+    // Find this tasks' index
+    const taskIndex = myTasks.findIndex((item) => item.id === task.id);
 
-    console.log(data);
+    // Delete the item and update storage and UI
+    myTasks.splice(taskIndex, 1);
+    setString("myTasks", JSON.stringify(myTasks));
+    myTasksStore.set(myTasks);
+    goBack();
+  }
 
-    if (data.data.deleteTask) {
-      const myTasksString = getString("myTasks");
-      let myTasks: taskType[] = myTasksString ? JSON.parse(myTasksString) : [];
+  async function toggleCompletedTask() {
+    // Get tasks
+    const myTasksString = getString("myTasks");
+    const myTasks: taskType[] = JSON.parse(myTasksString);
 
-      let completedMyTasks: taskType[];
-      if (!deleteTask) {
-        const completedMyTasksString = getString("completedMyTasks");
-        completedMyTasks = completedMyTasksString
-          ? JSON.parse(completedMyTasksString)
-          : [];
-      }
+    // Get this tasks' index
+    const taskIndex = myTasks.findIndex((item) => item.id === task.id);
 
-      // Find the task and move from active to completed list
-      const taskIndex = myTasks.findIndex((item) => item.id === task.id);
-      if (!deleteTask) completedMyTasks.push(myTasks.splice(taskIndex, 1)[0]);
-      else myTasks.splice(taskIndex, 1);
+    // Toggle the completed state
+    myTasks[taskIndex].completed = !myTasks[taskIndex].completed;
 
-      // Save the two lists
-      setString("myTasks", JSON.stringify(myTasks));
-      if (!deleteTask)
-        setString("completedMyTasks", JSON.stringify(completedMyTasks));
-
-      // Let the UI know there was a change
-      myTasksStore.set(myTasks);
-      if (!deleteTask) completedMyTasksStore.set(completedMyTasks);
-
-      // Close the task modal
-      goBack();
-    } else {
-      alert("an error has occurred");
-    }
+    // Save the list and update the UI
+    setString("myTasks", JSON.stringify(myTasks));
+    myTasksStore.set(myTasks);
+    goBack();
   }
 </script>
 
@@ -122,12 +110,12 @@
     <stackLayout class="m-b-20">
       <flexboxLayout justifyContent="space-between" class="m-t-20 m-l-5">
         <image
-          on:tap={() => deleteOrCompleteTask(true)}
+          on:tap={deleteTask}
           class="fas"
           src="font://&#xf2ed;"
           stretch="aspectFit" />
         <image
-          on:tap={() => deleteOrCompleteTask(false)}
+          on:tap={toggleCompletedTask}
           class="fas"
           src="font://&#xf058;"
           stretch="aspectFit" />

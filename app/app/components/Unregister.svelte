@@ -1,13 +1,7 @@
 <script lang="ts">
   import { confirm } from "@nativescript/core/ui/dialogs";
   import { getString, clear } from "@nativescript/core/application-settings";
-  import {
-    registeredStore,
-    loginStore,
-    myTasksStore,
-    completedMyTasksStore,
-  } from "../stores";
-  import { mutation } from "gql-query-builder";
+  import { loginStore, myTasksStore } from "../stores";
   import { navigate } from "svelte-native";
 
   import Login from "../App.svelte";
@@ -42,17 +36,15 @@ mutation {
           const data = await res.json();
           console.log(data);
 
-          if (data.data.removeUser.errors) {
+          if (data.data.deleteUser.errors) {
             alert("An error has occurred");
             return;
           }
 
           // Clear application settings data and go to login screen.
-          registeredStore.set(false);
-          loginStore.set({ idToken: "" });
+          console.log("Deleting all data...");
           loginStore.set({ idToken: "" });
           myTasksStore.set([]);
-          completedMyTasksStore.set([]);
           clear();
           navigate({ page: Login });
         } catch (e) {

@@ -19,7 +19,7 @@
   let reminder = false;
   let assignTask = false;
 
-  let urgencyItems = ["Low", "Normal", "High", "Emergency"];
+  let urgencyItems = ["Low", "Normal", "High"];
   let urgencySelectedIndex = 1;
 
   let assignablePeople = ["Joe", "John"];
@@ -44,10 +44,10 @@
       adjustedDate = selectedDate;
     }
     if (selectedHour) {
-      adjustedDate = new Date(date.setHours(selectedHour));
+      adjustedDate = new Date(adjustedDate.setHours(selectedHour));
     }
     if (selectedMinute) {
-      adjustedDate = new Date(date.setHours(selectedMinute));
+      adjustedDate = new Date(adjustedDate.setHours(selectedMinute));
     }
 
     query = `
@@ -58,6 +58,7 @@
       ${title ? `title: "${title}"` : ""}
       ${description ? `description: "${description}"` : ""}
       ${reminder ? `reminder: ${adjustedDate.getTime()}` : ""}
+      urgency: "${urgencyItems[urgencySelectedIndex]}"
       ${taskColor ? `taskColor: "${taskColor}"` : ""}
     }
   ) {
@@ -158,12 +159,15 @@
       <stackLayout class="nt-form">
         <stackLayout class="nt-input">
           <label>Title:</label>
-          <textField hint="Task title *" bind:text={title} />
+          <textField autocorrect={true} hint="Task title *" bind:text={title} />
         </stackLayout>
 
         <stackLayout class="nt-input">
           <label>Description:</label>
-          <textField hint="Task description" bind:text={description} />
+          <textField
+            autocorrect={true}
+            hint="Task description"
+            bind:text={description} />
         </stackLayout>
 
         <button

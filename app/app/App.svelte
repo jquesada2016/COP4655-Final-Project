@@ -1,34 +1,58 @@
 <script lang="ts">
-  import Logout from "./components/Logout.svelte";
   import Login from "./components/Login.svelte";
   import Content from "./Pages/mainContent/Content.svelte";
-  import Register from "./Pages/register/Register.svelte";
-
   import { navigate } from "svelte-native";
-  import { loginStore, registeredStore } from "./stores";
+  import { loginStore } from "./stores";
   import { onMount, tick } from "svelte";
   import ActionBar from "./components/ActionBar.svelte";
-
-  $: registered = $registeredStore;
-
-  $: loggedIn = $loginStore.idToken ? true : false;
+  import { FETCH_OPTIONS, URL } from "./constants";
 
   $: {
-    // This is to avoid a bug where navigating before components can mount fails
-    const delayNavigation = async () => {
-      await tick();
-      if (loggedIn && registered) navigate({ page: Content });
-    };
-    delayNavigation();
+    const loggedIn = $loginStore.idToken ? true : false;
+    const idToken = $loginStore.idToken;
+
+    if (!loggedIn) {
+    }
+    const query = `
+mutation {
+  addNewUser(
+    idToken: "${idToken}"
+  ) {
+    user {
+      idToken
+    }
+    errors {
+      field
+      message
+      errorCode
+    }
+  }
+}
+
+    `;
+
+    if (loggedIn) {
+      registerUser(query);
+    }
+  }
+
+  async function registerUser(query: string) {
+    const res = await fetch(URL, {
+      ...FETCH_OPTIONS,
+      body: JSON.stringify({ query }),
+    });
+
+    const data = await res.json();
+    console.log(data);
+
+    navigate({ page: Content });
   }
 </script>
 
 <page>
   <ActionBar />
 
-  {#if registered || !loggedIn}
+  <stackLayout>
     <Login />
-  {:else}
-    <Register />
-  {/if}
+  </stackLayout>
 </page>
