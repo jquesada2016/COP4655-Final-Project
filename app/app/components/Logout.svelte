@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { loginStore } from "../stores";
   import { setString } from "@nativescript/core/application-settings";
   import { navigate } from "svelte-native";

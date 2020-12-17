@@ -14,6 +14,7 @@
     "@nativescript/webpack": "3.0.0",
     "gql-query-builder": "^3.5.4",
     "nativescript-barcodescanner": "^4.0.1",
+    "nativescript-local-notifications": "^4.2.1",
     "nativescript-oauth2": "^3.0.3",
     "nativescript-qr-generator": "^2.0.0",
     "svelte-native": "~0.9.1"

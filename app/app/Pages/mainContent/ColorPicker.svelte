@@ -22,8 +22,8 @@
               colorSelectionCallback(colors[colorKey][colorShade]);
             }}
             backgroundColor={colors[colorKey][colorShade]}
-            width="64"
-            height="64"
+            width="40"
+            height="40"
             borderRadius="100%"
             marginLeft="10"
             marginRight="10"

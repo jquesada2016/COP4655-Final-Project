@@ -12,7 +12,7 @@ import {
     TnsOaProviderGoogle,
 } from "nativescript-oauth2/providers";
 
-import { setString } from "@nativescript/core/application-settings";
+import { getString, setString } from "@nativescript/core/application-settings";
 import { loginStore } from "./stores";
 
 let client: TnsOAuthClient = null;
@@ -42,19 +42,34 @@ function configureOAuthProviderGoogle() {
 export function tnsOauthLogin(providerType) {
     client = new TnsOAuthClient(providerType);
 
-    client.loginWithCompletion((tokenResult: ITnsOAuthTokenResult, error) => {
-        if (error) {
-            console.error("There was an error logging in.");
-            console.error(error);
-            return false;
-        } else {
-            console.log("Logged in successfully.");
+    client.loginWithCompletion(
+        async (tokenResult: ITnsOAuthTokenResult, error) => {
+            if (error) {
+                console.error("There was an error logging in.");
+                console.error(error);
+                return false;
+            } else {
+                console.log("Logged in successfully.");
 
-            // Save id token to application settings
-            setString("idToken", tokenResult.idToken);
+                // Save id token to application settings
+                setString("idToken", tokenResult.idToken);
 
-            // Set the store to update the UI know we have a idToken
-            loginStore.set({ idToken: tokenResult.idToken });
+                const userInfoEndpoint =
+                    "https://www.googleapis.com/oauth2/v3/userinfo";
+                // Make a request to Google
+                const res = await fetch(userInfoEndpoint, {
+                    headers: {
+                        Authorization: "Bearer " + tokenResult.accessToken,
+                    },
+                });
+                const data = await res.json();
+
+                setString("name", data.name);
+                setString("picture", data.picture);
+
+                // Set the store to update the UI know we have a idToken
+                loginStore.set({ idToken: tokenResult.idToken });
+            }
         }
-    });
+    );
 }

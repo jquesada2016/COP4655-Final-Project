@@ -9,6 +9,7 @@
   import AddTask from "./AddTask.svelte";
   import { navigate } from "svelte-native";
   import ActionBar from "../../components/ActionBar.svelte";
+  import AssignedTasks from "./AssignedTasks.svelte";
 
   let tabs = true;
 </script>
@@ -23,7 +24,7 @@
     </tabContentItem>
     <tabContentItem>
       <gridLayout>
-        <label class="h2 text-center">Assigned Tasks</label>
+        <AssignedTasks bind:tabs />
       </gridLayout>
     </tabContentItem>
     <tabContentItem>
@@ -31,8 +32,7 @@
         <stackLayout>
           <label text="Profile" class="h2 text-center" />
           <QRCode />
-          <ScanQRCode manager>Scan Manager QR Code</ScanQRCode>
-          <ScanQRCode>Scan Employee QR Code</ScanQRCode>
+          <ScanQRCode manager>Scan QR Code</ScanQRCode>
 
           <Logout />
           <Unregister />

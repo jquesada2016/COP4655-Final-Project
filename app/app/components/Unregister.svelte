@@ -5,6 +5,7 @@
   import { navigate } from "svelte-native";
 
   import Login from "../App.svelte";
+  import { FETCH_OPTIONS, URL } from "../constants";
 
   async function unregister() {
     confirm(
@@ -12,7 +13,6 @@
     ).then(async (res) => {
       console.log(res);
       if (res) {
-        const url = "http://192.168.0.10:8000/graphql";
         const query = `
 mutation {
   deleteUser(id: "${getString("id")}") {
@@ -26,15 +26,16 @@ mutation {
 }
 `;
 
-        const res = await fetch(url, {
-          method: "post",
-          headers: { "content-type": "application/json" },
+        const res = await fetch(URL, {
+          ...FETCH_OPTIONS,
           body: JSON.stringify({ query }),
         });
 
         try {
           const data = await res.json();
           console.log(data);
+
+          console.log(query);
 
           if (data.data.deleteUser.errors) {
             alert("An error has occurred");

@@ -1,5 +1,13 @@
 <script lang="ts">
+  import {
+    getString,
+    setString,
+  } from "@nativescript/core/application-settings";
+
   import { BarcodeScanner } from "nativescript-barcodescanner";
+  import { FETCH_OPTIONS, URL } from "../constants";
+  import { assignableUsersStore } from "../stores/assignableUsers";
+  import { assignableUser } from "../types/types";
 
   export let manager = false;
 
@@ -9,16 +17,13 @@
     scanner
       .scan({
         formats: "QR_CODE",
-        cancelLabel: "Close", // iOS only, default 'Close'
+        cancelLabel: "Cancel", // iOS only, default 'Close'
         cancelLabelBackgroundColor: "#333333", // iOS only, default '#000000' (black)
         message:
-          "Scan your " + (manager ? "manager's" : "employee's") + " QR code",
+          "Scan you another user's QR code in order to assign them tasks",
         showFlipCameraButton: true, // default false
-        preferFrontCamera: false, // default false
-        showTorchButton: true, // default false
         beepOnScan: true, // Play or Suppress beep on scan (default true)
         fullScreen: true, // Currently only used on iOS; with iOS 13 modals are no longer shown fullScreen by default, which may be actually preferred. But to use the old fullScreen appearance, set this to 'true'. Default 'false'.
-        torchOn: false, // launch with the flashlight on (default false)
         closeCallback: () => {
           console.log("Scanner closed");
         }, // invoked when the scanner was closed (success or abort)
@@ -28,19 +33,49 @@
       })
       .then(
         (result) => {
-          // Note that this Promise is never invoked when a 'continuousScanCallback' function is provided
-          alert({
-            title: "Scan result",
-            message: "Format: " + result.format + ",\nValue: " + result.text,
-            okButtonText: "Ok",
-          });
-
-          console.log(".then function fired");
+          fetchUserName(result.text);
         },
         (errorMessage) => {
-          console.log("No scan. " + errorMessage);
+          console.log(errorMessage);
         }
       );
+  }
+
+  async function fetchUserName(userId: string) {
+    const query = `
+    mutation {
+  addAssignableUser(
+    userId: "${getString("id")}"
+    assigneeId: "${userId}"
+  ) {
+    id
+    name
+  }
+}
+
+    `;
+
+    // Fetch data
+    const res = await fetch(URL, {
+      ...FETCH_OPTIONS,
+      body: JSON.stringify({ query }),
+    });
+
+    const data: any = await res.json();
+    console.log(data);
+
+    let assignableUsers: assignableUser[];
+    const assignableUsersString = getString("assignableUsers");
+    if (assignableUsersString)
+      assignableUsers = JSON.parse(assignableUsersString);
+    else assignableUsers = [];
+
+    assignableUsers.push(data.data.addAssignableUser);
+
+    assignableUsersStore.set(assignableUsers);
+    setString("assignableUsers", JSON.stringify(assignableUsers));
+
+    console.log(assignableUsers);
   }
 </script>
 
