@@ -6,6 +6,7 @@
   import { assignedTasksStore } from "../stores";
   import { task } from "../types";
   import { listFilter as listFilterType } from "../types/types";
+  import { colors } from "../colors";
 
   export let urgency: "Low" | "Normal" | "High";
   export let listFilter: listFilterType;
@@ -22,28 +23,33 @@
         urgency: "Normal",
         authorId: "",
         assigneeId: myId,
+        taskColor: colors.orange["300"],
       },
       {
-        id: "kjfe",
-        title: "this is another test",
+        id: "5454f54dfg",
+        title: "Turn in the project!",
+        description:
+          "You have to turn in the project in order to pass the class...",
         urgency: "High",
         authorId: "",
         assigneeId: myId,
+        taskColor: colors.blue["300"],
       },
       {
         id: "kjfeq",
-        title: "this is yet another test",
+        title: "This is a low urgence task",
         urgency: "Low",
         authorId: "",
         assigneeId: myId,
+        taskColor: colors.indigo["300"],
       },
       {
         id: "kjfeqw",
-        title: "this is yet another test",
+        title: "this is yet another assigned task",
         urgency: "Normal",
         authorId: "",
         assigneeId: myId,
-        taskColor: "red",
+        taskColor: colors.red["300"],
       },
     ]);
   }, 0);

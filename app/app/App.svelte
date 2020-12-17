@@ -67,7 +67,7 @@ mutation {
   <ActionBar />
 
   <stackLayout>
+    <label class="h1" horizontalAlignment="center">Login</label>
     <Login />
-    <button on:tap={navigateContent}>navigate</button>
   </stackLayout>
 </page>
