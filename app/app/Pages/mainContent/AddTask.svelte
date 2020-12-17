@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { StackLayout } from "@nativescript/core";
+  import { LocalNotifications } from "nativescript-local-notifications";
   import { goBack, showModal } from "svelte-native";
   import ColorPicker from "./ColorPicker.svelte";
 
@@ -29,7 +29,10 @@
   let selectedHour: number;
   let selectedMinute: number;
 
-  let adjustedDate: Date;
+  let adjustedDate: Date = new Date();
+
+  selectedHour = adjustedDate.getHours();
+  selectedMinute = adjustedDate.getMinutes();
 
   const iconSize = 32;
 
@@ -38,17 +41,7 @@
   let query: string;
 
   $: {
-    if (!selectedDate) {
-      adjustedDate = new Date();
-    } else {
-      adjustedDate = selectedDate;
-    }
-    if (selectedHour) {
-      adjustedDate = new Date(adjustedDate.setHours(selectedHour));
-    }
-    if (selectedMinute) {
-      adjustedDate = new Date(adjustedDate.setHours(selectedMinute));
-    }
+    adjustedDate.setHours(selectedHour, selectedMinute);
 
     query = `
   mutation {
@@ -112,6 +105,7 @@
       id: data.data.addNewTask.id,
       title,
       description,
+      urgency: urgencyItems[urgencySelectedIndex],
       reminder: reminder ? adjustedDate.getTime() : null,
       taskColor,
     });
@@ -119,6 +113,16 @@
     // Save tasks list
     setString("myTasks", JSON.stringify(myTasksArr));
     myTasksStore.set(myTasksArr);
+
+    LocalNotifications.schedule([
+      {
+        title,
+        body: description,
+        color: taskColor,
+        at: adjustedDate,
+        notificationLed: true,
+      },
+    ]);
 
     goBack();
   }

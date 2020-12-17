@@ -117,7 +117,7 @@ mutation{
         <image
           on:tap={toggleCompletedTask}
           class="fas"
-          src="font://&#xf058;"
+          src="font://&#xf00c;"
           stretch="aspectFit" />
       </flexboxLayout>
       <button class="-outline -rounded-lg m-t-10 m-r-10 m-r-10">Cancel</button>

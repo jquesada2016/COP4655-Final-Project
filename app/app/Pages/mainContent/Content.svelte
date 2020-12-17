@@ -24,7 +24,7 @@
     </tabContentItem>
     <tabContentItem>
       <gridLayout>
-        <AssignedTasks bind:tabs />
+        <!-- <AssignedTasks bind:tabs /> -->
       </gridLayout>
     </tabContentItem>
     <tabContentItem>

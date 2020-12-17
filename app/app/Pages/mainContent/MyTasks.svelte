@@ -14,6 +14,8 @@
 
   $: {
     tasks = $myTasksStore.filter((item) => !item.completed);
+
+    console.log(tasks);
     completedTasks = $myTasksStore.filter((item) => item.completed);
 
     high = tasks.filter((item) => item.urgency === "High");
@@ -53,7 +55,7 @@
               navigate({ page: AddTask });
             }}>+</button>
 
-          {#if high}
+          {#if high.length}
             <flexboxLayout alignItems="center">
               <label class="m-20">High</label>
 
@@ -77,7 +79,7 @@
               {/if}
             {/each}
           {/if}
-          {#if normal}
+          {#if normal.length}
             <flexboxLayout alignItems="center">
               <label class="m-20">Normal</label>
 
@@ -101,7 +103,7 @@
               {/if}
             {/each}
           {/if}
-          {#if low}
+          {#if low.length}
             <flexboxLayout alignItems="center">
               <label class="m-20">Low</label>
 
