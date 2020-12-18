@@ -1,0 +1,7 @@
+node_modules/
+dist
+.env
+.vscode
+.secret
+package-lock.json
+generated*
