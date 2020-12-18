@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getString } from "@nativescript/core/application-settings";
-  import { navigate, showModal } from "svelte-native";
+  import { showModal } from "svelte-native";
   import Task from "../Pages/mainContent/Task.svelte";
 
   import { assignedTasksStore } from "../stores";

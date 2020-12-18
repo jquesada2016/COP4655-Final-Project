@@ -22,8 +22,14 @@
         </stackLayout>
       </scrollView>
     </tabContentItem>
-    <tabContentItem><label class="h1">hello</label></tabContentItem>
-    <tabContentItem><label class="h1">Hello</label></tabContentItem>
-    <tabContentItem><label class="h1">Hello</label></tabContentItem>
+    <tabContentItem>
+      <label class="m-30">There's nothing to show here</label>
+    </tabContentItem>
+    <tabContentItem>
+      <label class="m-30">There's nothing to show here</label>
+    </tabContentItem>
+    <tabContentItem>
+      <label class="m-30">There's nothing to show here</label>
+    </tabContentItem>
   </tabs>
 {/if}

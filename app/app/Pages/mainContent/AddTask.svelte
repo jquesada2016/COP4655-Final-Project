@@ -118,7 +118,7 @@
       {
         title,
         body: description,
-        color: taskColor,
+        color: taskColor.substring(1),
         at: adjustedDate,
         notificationLed: true,
       },
